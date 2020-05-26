@@ -1,26 +1,6 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.4.2
-# include "TinyASIO/Driver.hpp"
-
-// 状態遷移
-enum class State { SelectingDriver, ShowGuitarPlay };
-
-State StateOfSelectingDriver(const Font& font, const asio::DriverList& lists)
-{
-	static size_t indexForDriver = 0;
-
-	Array<String> options;
-
-	for (size_t i = 0; i < lists.Count(); ++i)
-	{
-		auto driverName = Unicode::FromWString(lists.Items(i).driverName);
-		options.push_back(driverName);
-	}
-
-	SimpleGUI::RadioButtons(indexForDriver, options, { 0, 0 });
-
-	return State::SelectingDriver;
-}
+# include "state.hpp"
 
 void Main()
 {
@@ -46,13 +26,9 @@ void Main()
 		switch (state) {
 		case State::SelectingDriver:
 			state = StateOfSelectingDriver(font, pathes);
-			
-			// ボタンが押されたら
-			if (SimpleGUI::Button(U"Move the cat", Vec2(600, 20)))
-			{
-				// 猫の座標を画面内のランダムな位置に移動する
-				catPos = RandomVec2(Scene::Rect());
-			}
+			break;
+
+		case State::SelectingChannel:
 			break;
 
 		case State::ShowGuitarPlay:
