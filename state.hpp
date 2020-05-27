@@ -10,6 +10,7 @@ enum class State
 	ShowGuitarPlay
 };
 
+// ドライバ自体はグローバルに宣言しておく
 asio::Driver* driver;
 
 State StateOfSelectingDriver(const Font& font, const asio::DriverList& lists)
@@ -24,13 +25,14 @@ State StateOfSelectingDriver(const Font& font, const asio::DriverList& lists)
 		options.push_back(driverName);
 	}
 
-	SimpleGUI::RadioButtons(indexForDriver, options, { 0, 0 });
+	SimpleGUI::RadioButtons(indexForDriver, options, { 20, 20 });
 
 	const int width = 100;
 	const int space = 20;
 	if (SimpleGUI::Button(U"Connect", { Window::ClientWidth() - width - space, space }, width))
 	{
 		driver = &asio::Driver::Init(lists.Items(indexForDriver));
+		return State::SelectingChannel;
 	}
 
 	return State::SelectingDriver;
@@ -38,6 +40,34 @@ State StateOfSelectingDriver(const Font& font, const asio::DriverList& lists)
 
 State StateOfSelectingChannel(const Font& font)
 {
-	auto channelManager = driver->ChannelManager();
-	
+	const auto& channelManager = driver->ChannelManager();
+	static size_t indexForInput = 0;
+	static size_t indexForOutput = 0;
+
+	Array<String> inputOptions;
+	Array<String> outputOptions;
+
+	for (size_t i = 0; i < channelManager.NumberOfInputs(); ++i)
+	{
+		const auto& input = channelManager.Inputs(i);
+		inputOptions.push_back(Unicode::Widen(input.name));
+	}
+
+	for (size_t i = 0; i < channelManager.NumberOfOutputs(); ++i)
+	{
+		const auto& output = channelManager.Outputs(i);
+		outputOptions.push_back(Unicode::Widen(output.name));
+	}
+
+	SimpleGUI::RadioButtons(indexForInput, inputOptions, { 20, 20 });
+	SimpleGUI::RadioButtons(indexForOutput, outputOptions, { 300, 20 });
+
+	const int width = 100;
+	const int space = 20;
+	if (SimpleGUI::Button(U"Connect", { Window::ClientWidth() - width - space, space }, width))
+	{
+		return State::SelectingChannel;
+	}
+
+	return State::SelectingChannel;
 }

@@ -29,10 +29,13 @@ void Main()
 			break;
 
 		case State::SelectingChannel:
+			state = StateOfSelectingChannel(font);
 			break;
 
 		case State::ShowGuitarPlay:
 			break;
 		}
 	}
+
+	driver->Dispose();
 }
