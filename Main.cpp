@@ -1,6 +1,6 @@
 ﻿
 # include <Siv3D.hpp> // OpenSiv3D v0.4.2
-# include "state.hpp"
+//# include "state.hpp"
 
 void Main()
 {
@@ -8,32 +8,32 @@ void Main()
 
 	const Font font(24);
 
-	const auto pathes = asio::Registry::GetAsioDriverPathes();
+	//const auto pathes = asio::Registry::GetAsioDriverPathes();
 
-	State state = State::SelectingDriver;
+	//State state = State::SelectingDriver;
 
 	Graphics::SetTargetFrameRateHz(120);
 
 	while (System::Update())
 	{
-		switch (state) {
-		case State::SelectingDriver:
-			state = StateOfSelectingDriver(font, pathes);
-			break;
-
-		case State::SelectingChannel:
-			state = StateOfSelectingChannel(font);
-			break;
-
-		case State::ShowGuitarPlay:
-			state = StateOfShowGuitarPlay(font);
-			break;
-		}
+	//	switch (state) {
+	//	case State::SelectingDriver:
+	//		state = StateOfSelectingDriver(font, pathes);
+	//		break;
+	//
+	//	case State::SelectingChannel:
+	//		state = StateOfSelectingChannel(font);
+	//		break;
+	//
+	//	case State::ShowGuitarPlay:
+	//		state = StateOfShowGuitarPlay(font);
+	//		break;
+	//	}
 	}
 
-	controller->DisposeBuffer();
-	driver->Dispose();
-
-	delete controller;
-	delete driver;
+	//controller->DisposeBuffer();
+	//driver->Dispose();
+	//
+	//delete controller;
+	//delete driver;
 }
