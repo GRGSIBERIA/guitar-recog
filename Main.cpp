@@ -12,6 +12,8 @@ void Main()
 
 	State state = State::SelectingDriver;
 
+	Graphics::SetTargetFrameRateHz(120);
+
 	while (System::Update())
 	{
 		switch (state) {
@@ -24,6 +26,7 @@ void Main()
 			break;
 
 		case State::ShowGuitarPlay:
+			state = StateOfShowGuitarPlay(font);
 			break;
 		}
 	}

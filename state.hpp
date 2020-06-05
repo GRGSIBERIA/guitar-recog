@@ -10,7 +10,9 @@ enum class State
 	ShowGuitarPlay
 };
 
-asio::Driver* driver;		// ドライバ自体はグローバルに宣言しておく
+asio::Driver* driver;						// ドライバ自体はグローバルに宣言しておく
+asio::InputBackController* controller;
+size_t indexOfselectedInputChannel;
 
 /**
 * ドライバを選択させる
@@ -47,10 +49,8 @@ State StateOfSelectingChannel(const Font& font)
 {
 	const auto& channelManager = driver->ChannelManager();
 	static size_t indexForInput = 0;
-	//static size_t indexForOutput = 0;
 
 	Array<String> inputOptions;
-	//Array<String> outputOptions;
 
 	for (size_t i = 0; i < channelManager.NumberOfInputs(); ++i)
 	{
@@ -58,23 +58,29 @@ State StateOfSelectingChannel(const Font& font)
 		inputOptions.push_back(Unicode::Widen(input.name));
 	}
 
-	//for (size_t i = 0; i < channelManager.NumberOfOutputs(); ++i)
-	//{
-	//	const auto& output = channelManager.Outputs(i);
-	//	outputOptions.push_back(Unicode::Widen(output.name));
-	//}
-
 	font(U"Select an input channel for output channels.").draw(Vec2{ 20, 20 }, Palette::Black);
 	SimpleGUI::RadioButtons(indexForInput, inputOptions, { 20, 60 });
-	//SimpleGUI::RadioButtons(indexForOutput, outputOptions, { 300, 60 });
 
 	const int width = 100;
 	const int space = 20;
 	if (SimpleGUI::Button(U"Connect", { Window::ClientWidth() - width - space, space }, width))
 	{
-		
-		return State::SelectingChannel;
+		controller = new asio::InputBackController(driver, channelManager.Inputs(indexForInput));
+		controller->Start();
+		return State::ShowGuitarPlay;
 	}
 
 	return State::SelectingChannel;
+}
+
+State StateOfShowGuitarPlay(const Font& font)
+{
+	static std::vector<double> recordData;
+	const auto fetched = controller->Fetch();
+	
+
+	const int height = 32;
+	font(U"Sampling Rate: ", controller->SampleRate()).draw(0, height * 0);
+	font(U"Buffered Size: ", fetched->size()).draw(0, height * 1);
+	return State::ShowGuitarPlay;
 }

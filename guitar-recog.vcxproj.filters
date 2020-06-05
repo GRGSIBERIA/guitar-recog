@@ -94,6 +94,9 @@
     <Filter Include="Resource Files\example\font\LogoTypeGothic">
       <UniqueIdentifier>{b3586a98-5569-49e1-b9d6-cd80cf76ce9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\state">
+      <UniqueIdentifier>{ab23d791-ae06-4fa8-8073-bad17b2ccee2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -368,6 +371,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="state.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="controller.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

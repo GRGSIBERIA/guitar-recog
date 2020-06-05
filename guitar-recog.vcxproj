@@ -239,6 +239,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="controller.hpp" />
     <ClInclude Include="state.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
