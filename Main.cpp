@@ -31,5 +31,9 @@ void Main()
 		}
 	}
 
+	controller->DisposeBuffer();
 	driver->Dispose();
+
+	delete controller;
+	delete driver;
 }

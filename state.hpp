@@ -23,7 +23,7 @@ State StateOfSelectingDriver(const Font& font, const asio::DriverList& lists)
 
 	Array<String> options;
 
-	for (size_t i = 0; i < lists.Count(); ++i)
+	for (long i = 0; i < lists.Count(); ++i)
 	{
 		auto driverName = Unicode::FromWString(lists.Items(i).driverName);
 		options.push_back(driverName);
@@ -35,7 +35,7 @@ State StateOfSelectingDriver(const Font& font, const asio::DriverList& lists)
 	const int space = 20;
 	if (SimpleGUI::Button(U"Connect", { Window::ClientWidth() - width - space, space }, width))
 	{
-		driver = &asio::Driver::Init(lists.Items(indexForDriver));
+		driver = &asio::Driver::Init(lists.Items((long)indexForDriver));
 		return State::SelectingChannel;
 	}
 
@@ -54,7 +54,7 @@ State StateOfSelectingChannel(const Font& font)
 
 	for (size_t i = 0; i < channelManager.NumberOfInputs(); ++i)
 	{
-		const auto& input = channelManager.Inputs(i);
+		const auto& input = channelManager.Inputs((long)i);
 		inputOptions.push_back(Unicode::Widen(input.name));
 	}
 
@@ -65,7 +65,7 @@ State StateOfSelectingChannel(const Font& font)
 	const int space = 20;
 	if (SimpleGUI::Button(U"Connect", { Window::ClientWidth() - width - space, space }, width))
 	{
-		controller = new asio::InputBackController(driver, channelManager.Inputs(indexForInput));
+		controller = new asio::InputBackController(driver, channelManager.Inputs((long)indexForInput));
 		controller->Start();
 		return State::ShowGuitarPlay;
 	}
